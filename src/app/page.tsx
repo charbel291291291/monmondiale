@@ -24,6 +24,9 @@ type Match = {
   status: "LIVE" | "FT" | "UPCOMING";
   minute: string;
   date: string;
+  lebanonTimeLabel?: string;
+  lebanonTime?: string;
+  lebanonDate?: string;
   venue: string;
   home: string;
   away: string;
@@ -166,7 +169,7 @@ function MatchCard({ match }: { match: Match }) {
       <div className="mb-4 flex items-center justify-between gap-3">
         <div>
           <div className="text-xs font-bold uppercase tracking-[0.25em] text-white/40">{match.group}</div>
-          <div className="mt-1 text-sm text-white/50">Lebanon time: {formatLebanonTime(match.date)}</div>
+          <div className="mt-1 text-sm text-white/50">Lebanon time: {match.lebanonTimeLabel || formatLebanonTime(match.date)}</div>
         </div>
 
         <div className={`rounded-full border px-3 py-1 text-xs font-black ${statusStyle(match.status)}`}>

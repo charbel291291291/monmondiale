@@ -104,8 +104,7 @@ function normalizeStatus(status: string) {
   const raw = String(status || "").trim();
   const s = raw.toLowerCase();
 
-  // APIFootball sometimes returns live minute as "3", "45", "90+2"
-  if (/^\d+(\+\d+)?$/.test(raw)) return "LIVE";
+  if (/^\d+(\+)?(\d+)?$/.test(raw)) return "LIVE";
 
   if (s.includes("finished") || s === "ft" || s.includes("after")) return "FT";
   if (s.includes("live") || s.includes("half") || s.includes("'")) return "LIVE";
@@ -161,6 +160,39 @@ function cleanGoals(goals: any[]) {
     .filter((goal: any) => goal.scorer);
 }
 
+
+function addOneHourLebanonClock(matchDate: string, matchTime: string) {
+  const safeDate = matchDate || "2026-06-01";
+  const safeTime = matchTime || "00:00";
+
+  const [year, month, day] = safeDate.split("-").map(Number);
+  const [hourRaw, minuteRaw] = safeTime.split(":").map(Number);
+
+  const hour = Number.isFinite(hourRaw) ? hourRaw : 0;
+  const minute = Number.isFinite(minuteRaw) ? minuteRaw : 0;
+
+  const shifted = new Date(Date.UTC(year, month - 1, day, hour + 1, minute, 0));
+
+  const yyyy = shifted.getUTCFullYear();
+  const mm = String(shifted.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(shifted.getUTCDate()).padStart(2, "0");
+  const hh = String(shifted.getUTCHours()).padStart(2, "0");
+  const mi = String(shifted.getUTCMinutes()).padStart(2, "0");
+
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  const dayName = dayNames[shifted.getUTCDay()];
+  const monthName = monthNames[shifted.getUTCMonth()];
+
+  return {
+    iso: `${yyyy}-${mm}-${dd}T${hh}:${mi}:00+03:00`,
+    label: `${dayName}, ${dd} ${monthName} at ${hh}:${mi}`,
+    time: `${hh}:${mi}`,
+    date: `${dayName}, ${dd} ${monthName}`
+  };
+}
+
 function mapMatch(item: any) {
   const home = normalizeTeamName(item.match_hometeam_name || "TBD");
   const away = normalizeTeamName(item.match_awayteam_name || "TBD");
@@ -176,6 +208,7 @@ function mapMatch(item: any) {
       : Number(item.match_awayteam_score);
 
   const group = groupForTeam(home) || groupForTeam(away);
+  const lebanonClock = addOneHourLebanonClock(item.match_date, item.match_time);
 
   return {
     id: String(item.match_id),
@@ -183,7 +216,10 @@ function mapMatch(item: any) {
     groupKey: group,
     status: normalizeStatus(item.match_status),
     minute: item.match_status || "",
-    date: `${item.match_date}T${item.match_time || "00:00"}:00`,
+    date: lebanonClock.iso,
+    lebanonTimeLabel: lebanonClock.label,
+    lebanonTime: lebanonClock.time,
+    lebanonDate: lebanonClock.date,
     venue: item.match_stadium || "Venue TBD",
     home,
     away,

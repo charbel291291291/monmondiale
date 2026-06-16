@@ -384,7 +384,10 @@ export default function Home() {
         <header className="mb-5 rounded-[1.75rem] border border-white/10 bg-gradient-to-br from-white/[0.075] to-white/[0.035] p-5 shadow-2xl shadow-black/25 backdrop-blur-xl sm:mb-8 sm:rounded-[2rem] sm:p-6">
           <div className="flex flex-col justify-between gap-5 text-center md:flex-row md:items-center md:text-left">
             <div>
-              <div className="text-sm font-bold uppercase tracking-[0.35em] text-amber-200">Lebanon Time Always</div>
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center overflow-hidden rounded-3xl border border-amber-300/20 bg-black/25 p-2 shadow-2xl shadow-black/30 md:mx-0">
+  <img src="/website-logo.png" alt="Mondial 2026" className="h-full w-full object-contain" />
+</div>
+<div className="text-sm font-bold uppercase tracking-[0.35em] text-amber-200">Lebanon Time Always</div>
               <h1 className="mx-auto mt-4 max-w-[11ch] text-center text-[2.65rem] font-black leading-[0.98] tracking-[-0.04em] text-white sm:max-w-none sm:text-5xl md:mx-0 md:text-left md:text-6xl">Mondial 2026 Live Center</h1>
               <p className="mx-auto mt-4 max-w-md text-center text-base leading-7 text-white/45 md:mx-0 md:text-left">
                 Matches, results, goals, assists, top scorers, top assisters, and grouped standings.

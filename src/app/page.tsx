@@ -344,7 +344,7 @@ export default function Home() {
         const hasLiveMatch = Array.isArray(json.matches) && json.matches.some((m: Match) => m.status === "LIVE");
 
         clearInterval(intervalId);
-        intervalId = setInterval(loadData, hasLiveMatch ? 15000 : 30000);
+        intervalId = setInterval(loadData, 300000);
       } catch (err: any) {
         setError(err.message || "Failed to fetch");
       }
@@ -352,8 +352,17 @@ export default function Home() {
 
     loadData();
 
+    const handleVisibilityRefresh = () => {
+      if (document.visibilityState === "visible") {
+        loadData();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityRefresh);
+
     return () => {
       clearInterval(intervalId);
+      document.removeEventListener("visibilitychange", handleVisibilityRefresh);
     };
   }, []);
 

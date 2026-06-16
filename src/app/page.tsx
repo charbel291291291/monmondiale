@@ -2,6 +2,7 @@
 
 import "flag-icons/css/flag-icons.min.css";
 import { useEffect, useMemo, useState } from "react";
+import { InstallPwaButton } from "@/components/InstallPwaButton";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
@@ -458,6 +459,7 @@ export default function Home() {
         )}
       </div>
       
+      <InstallPwaButton />
     </main>
   );
 }

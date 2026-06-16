@@ -24,3 +24,58 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Mobile polish */
+html,
+body {
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.mobile-table {
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-table::-webkit-scrollbar {
+  height: 6px;
+}
+
+.mobile-table::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+}
+
+@media (max-width: 640px) {
+  table th,
+  table td {
+    white-space: nowrap;
+  }
+}
+
+/* Remove ugly internal scrollbars from standings */
+.no-inner-scroll {
+  overflow: visible !important;
+}
+
+/* Subtle engraved brand effect */
+.engraved-brand {
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.08),
+    0 -1px 0 rgba(0,0,0,0.75),
+    0 0 18px rgba(251,191,36,0.10);
+  letter-spacing: 0.32em;
+}
+
+/* Mobile luxury header polish */
+@media (max-width: 640px) {
+  .engraved-brand {
+    display: inline-block;
+    text-shadow:
+      0 1px 0 rgba(255,255,255,0.10),
+      0 -1px 0 rgba(0,0,0,0.85),
+      0 0 22px rgba(251,191,36,0.16);
+  }
+}
